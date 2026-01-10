@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
-import { MapContainer, TileLayer, GeoJSON, Popup, useMap, Circle, Marker } from 'react-leaflet';
+import { useRef, useState } from 'react';
+import { MapContainer, TileLayer, GeoJSON, Popup, Circle } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { MapPin, ZoomIn, ZoomOut, Layers, Navigation } from 'lucide-react';
+import { ZoomIn, ZoomOut, Layers, Navigation } from 'lucide-react';
 
 // Fix for default marker icons in Leaflet with bundlers
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -66,33 +66,6 @@ const getCircleRadius = (risk: WardData['risk']) => {
   }
 };
 
-// Custom control component for zoom buttons - must be inside MapContainer
-const MapControls = ({ onReset }: { onReset: () => void }) => {
-  const map = useMap();
-
-  const handleZoomIn = () => map.zoomIn();
-  const handleZoomOut = () => map.zoomOut();
-  const handleResetView = () => onReset();
-
-  useEffect(() => {
-    // Controls are rendered outside MapContainer, so we just return null here
-  }, []);
-
-  return null;
-};
-
-// Separate component for map event handling
-const MapEventHandler = ({ mapRef }: { mapRef: React.RefObject<L.Map | null> }) => {
-  const map = useMap();
-  
-  useEffect(() => {
-    if (mapRef.current === null) {
-      (mapRef as React.MutableRefObject<L.Map | null>).current = map;
-    }
-  }, [map, mapRef]);
-
-  return null;
-};
 
 interface LeafletMapProps {
   onWardSelect?: (ward: WardData) => void;
@@ -135,8 +108,8 @@ const LeafletMap = ({ onWardSelect, selectedWardId, showDrainNetwork = false, he
         zoom={defaultZoom}
         className="w-full h-full"
         zoomControl={false}
+        ref={mapRef}
       >
-        <MapEventHandler mapRef={mapRef} />
         
         {/* Tile Layer */}
         {mapLayer === 'streets' ? (
