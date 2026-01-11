@@ -121,6 +121,14 @@ const getTrendIcon = (trend: ZoneScore['incidentTrend']) => {
   }
 };
 
+interface PreparednessMetric {
+  category: string;
+  icon: any;
+  score: number;
+  status: "good" | "moderate" | "poor";
+  details: string;
+}
+
 const PreparednessScorecard = () => {
   const overallScore = Math.round(
     zoneScores.reduce((acc, z) => acc + z.overallScore, 0) / zoneScores.length
@@ -198,110 +206,114 @@ const PreparednessScorecard = () => {
               ))}
           </div>
         </div>
-
         {/* Repeat Flooding Locations */}
-<div className="glass-card p-6">
-  <h2 className="text-lg font-semibold text-foreground mb-4">
-    Repeat Flooding Locations (Top 10)
-  </h2>
+        <div className="glass-card p-6">
+          <h2 className="text-lg font-semibold text-foreground mb-4">
+            Repeat Flooding Locations (Top 10)
+          </h2>
 
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-    {[
-      {
-        location: 'Adarsh Nagar – Hakikat Nagar – Jahangirpuri Metro Station',
-        zone: 'North',
-        image: '/images/locations/adarsh-nagar.jpg',
-      },
-      {
-        location: 'Anand Parbat Road',
-        zone: 'North',
-        image: '/images/locations/anand-parbat.jpg',
-      },
-      {
-        location: 'Archana T-Point, Greater Kailash',
-        zone: 'South',
-        image: '/images/locations/greater-kailash.jpg',
-      },
-      {
-        location: 'Mukarba Chowk',
-        zone: 'North',
-        image: '/images/locations/mukarba-chowk.jpg',
-      },
-      {
-        location: 'Bhishma Pitamaha Marg',
-        zone: 'Central',
-        image: '/images/locations/bhishma-marg.jpg',
-      },
-      {
-        location: 'Hansraj Gupta Marg',
-        zone: 'North',
-        image: '/images/locations/hansraj-gupta.jpg',
-      },
-      {
-        location: 'DND Flyover towards Maharani Bagh',
-        zone: 'South',
-        image: '/images/locations/dnd-flyover.jpg',
-      },
-      {
-        location: 'Aurobindo Marg',
-        zone: 'South',
-        image: '/images/locations/aurobindo-marg.jpg',
-      },
-      {
-        location: 'Andheria Mor',
-        zone: 'South',
-        image: '/images/locations/andheria-mor.jpg',
-      },
-      {
-        location: 'Barf Khana Chowk',
-        zone: 'North',
-        image: '/images/locations/barf-khana.jpg',
-      },
-    ].map((loc, index) => (
-      <div
-        key={loc.location}
-        className="p-3 rounded-xl bg-secondary/30 border border-border/50 
-                   hover:shadow-lg hover:-translate-y-1 transition-all duration-200"
-      >
-        {/* Image */}
-        <div className="relative">
-          <img
-            src={loc.image}
-            alt={loc.location}
-            className="w-full h-24 object-cover rounded-lg"
-          />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            {[
+              {
+                location: 'Adarsh Nagar – Hakikat Nagar – Jahangirpuri Metro Station',
+                zone: 'North',
+                image: '/images/locations/adarsh-nagar.jpg',
+              },
+              {
+                location: 'Anand Parbat Road',
+                zone: 'North',
+                image: '/images/locations/anand-parbat.jpg',
+              },
+              {
+                location: 'Archana T-Point, Greater Kailash',
+                zone: 'South',
+                image: '/images/locations/greater-kailash.jpg',
+              },
+              {
+                location: 'Mukarba Chowk',
+                zone: 'North',
+                image: '/images/locations/mukarba-chowk.jpg',
+              },
+              {
+                location: 'Bhishma Pitamaha Marg',
+                zone: 'Central',
+                image: '/images/locations/bhishma-marg.jpg',
+              },
+              {
+                location: 'Hansraj Gupta Marg',
+                zone: 'North',
+                image: '/images/locations/hansraj-gupta.jpg',
+              },
+              {
+                location: 'DND Flyover towards Maharani Bagh',
+                zone: 'South',
+                image: '/images/locations/dnd-flyover.jpg',
+              },
+              {
+                location: 'Aurobindo Marg',
+                zone: 'South',
+                image: '/images/locations/aurobindo-marg.jpg',
+              },
+              {
+                location: 'Andheria Mor',
+                zone: 'South',
+                image: '/images/locations/andheria-mor.jpg',
+              },
+              {
+                location: 'Barf Khana Chowk',
+                zone: 'North',
+                image: '/images/locations/barf-khana.jpg',
+              },
+            ].map((loc, index) => (
+              <div
+                key={loc.location}
+                className="p-3 rounded-xl bg-secondary/30 border border-border/50
+                           hover:shadow-lg hover:-translate-y-1 transition-all duration-200"
+              >
+                {/* Image */}
+                <div className="relative">
+                  <img
+                    src={loc.image}
+                    alt={loc.location}
+                    className="w-full h-24 object-cover rounded-lg"
+                  />
 
-          {/* Rank */}
-          <span
-            className={`absolute top-2 left-2 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-              index < 3
-                ? 'bg-destructive text-destructive-foreground'
-                : index < 6
-                ? 'bg-warning text-warning-foreground'
-                : 'bg-secondary text-secondary-foreground'
-            }`}
-          >
-            {index + 1}
-          </span>
-        </div>
+                  {/* Rank */}
+                  <span
+                    className={`absolute top-2 left-2 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                      index < 3
+                        ? 'bg-destructive text-destructive-foreground'
+                        : index < 6
+                        ? 'bg-warning text-warning-foreground'
+                        : 'bg-secondary text-secondary-foreground'
+                    }`}
+                  >
+                    {index + 1}
+                  </span>
+                </div>
 
-        {/* Text */}
-        <div className="mt-2">
-          <p className="text-sm font-medium text-foreground leading-tight line-clamp-2">
-            {loc.location}
-          </p>
+                {/* Text */}
+                <div className="mt-2">
+                  <p className="text-sm font-medium text-foreground leading-tight line-clamp-2">
+                    {loc.location}
+                  </p>
 
-          <div className="flex items-center justify-between mt-1">
-            <span className="text-xs text-muted-foreground">
-              {loc.zone} Zone
-            </span>
-            <span className="text-xs text-destructive font-medium">
-              High recurrence
-            </span>
+                  <div className="flex items-center justify-between mt-1">
+                    <span className="text-xs text-muted-foreground">
+                      {loc.zone} Zone
+                    </span>
+                    <span className="text-xs text-destructive font-medium">
+                      High recurrence
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
-    ))}
-  </div>
-</div>
 
+    </Layout>
+  );
+};
+
+export default PreparednessScorecard;
